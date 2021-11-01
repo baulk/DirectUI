@@ -29,7 +29,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR lpCmdLine, int) {
     auto button = Create<Button>();
     auto buttonText = Create<TextBlock>();
     buttonText->Text(L"Click me!");
-    button->CornerRadius(DX::SizeF(5, 5))->Content(buttonText)->Padding(4)->FontSize(40)->Background(Brushes::Cyan())->Width(100)->Height(40);
+    button->CornerRadius(DX::SizeF(5, 5))->Content(buttonText)->Padding(4)->FontSize(40)->Background(Brushes::WhiteSmoke())->Width(100)->Height(40);
     button->AddEventHandler(Button::ClickEvent, [nameTB, &p](auto& source, const auto& args) {
         nameTB->Text(L"Cactus");
         return true;
