@@ -3,64 +3,54 @@
 #include "Core.h"
 
 namespace DirectUI {
-	class Window;
+class Window;
 
-	static const wchar_t* DirectUIWindowClassName = L"DirectUIWindowClassName";
+static const wchar_t *DirectUIWindowClassName = L"DirectUIWindowClassName";
 
-	class Application : public DependencyObject {
-		friend class Window;
+class Application : public DependencyObject {
+  friend class Window;
 
-	public:
-		Application();
+public:
+  Application();
 
-		static Application* Current() {
-			return _app;
-		}
+  static Application *Current() { return _app; }
 
-		bool Initialize();
-		virtual int Run();
+  bool Initialize();
+  virtual int Run();
 
-		DX::Direct2D::Factory1& D2DFactory() {
-			return _d2dfactory;
-		}
+  DX::Direct2D::Factory1 &D2DFactory() { return _d2dfactory; }
 
-		DX::DirectWrite::Factory2& DWriteFactory() {
-			return _dwriteFactory;
-		}
+  DX::DirectWrite::Factory2 &DWriteFactory() { return _dwriteFactory; }
 
-		float GetDpi() const {
-			return _dpi;
-		}
+  float GetDpi() const { return _dpi; }
 
-	protected:
-		virtual void OnInit();
-		virtual void OnExit();
+protected:
+  virtual void OnInit();
+  virtual void OnExit();
 
-		virtual bool RegisterWindowClass();
+  virtual bool RegisterWindowClass();
 
-		virtual LRESULT WindowProc(HWND, UINT, WPARAM, LPARAM);
+  virtual LRESULT WindowProc(HWND, UINT, WPARAM, LPARAM);
 
-		bool CreateDeviceContextAndSwapChain(HWND, DX::Direct2D::DeviceContext& dc, DX::Dxgi::SwapChain1& swapChain);
+  bool CreateDeviceContextAndSwapChain(HWND, DX::Direct2D::DeviceContext &dc, DX::Dxgi::SwapChain1 &swapChain);
 
-	private:
-		static LRESULT CALLBACK TopLevelWindowProc(HWND, UINT, WPARAM, LPARAM);
-		static void CreateDeviceSwapChainBitmap(const DX::Dxgi::SwapChain& swapChain, const DX::Direct2D::DeviceContext& target);
-		static bool ResizeSwapChainBitmap(DX::Direct2D::DeviceContext& target);
-		void RemoveWindow(HWND hWnd);
+private:
+  static LRESULT CALLBACK TopLevelWindowProc(HWND, UINT, WPARAM, LPARAM);
+  static void CreateDeviceSwapChainBitmap(const DX::Dxgi::SwapChain &swapChain,
+                                          const DX::Direct2D::DeviceContext &target);
+  static bool ResizeSwapChainBitmap(DX::Direct2D::DeviceContext &target);
+  void RemoveWindow(HWND hWnd);
 
-		void AddWindow(HWND hWnd, Window* window) {
-			_windows[hWnd] = window;
-		}
+  void AddWindow(HWND hWnd, Window *window) { _windows[hWnd] = window; }
 
-	private:
-		std::map<HWND, Window*> _windows;
-		DX::Direct3D::Device1 _d3dDevice;
-		DX::Direct2D::Factory1 _d2dfactory;
-		DX::Dxgi::SwapChain1 _swapChain;
-		DX::DirectWrite::Factory2 _dwriteFactory;
-		float _dpi;
+private:
+  std::map<HWND, Window *> _windows;
+  DX::Direct3D::Device1 _d3dDevice;
+  DX::Direct2D::Factory1 _d2dfactory;
+  DX::Dxgi::SwapChain1 _swapChain;
+  DX::DirectWrite::Factory2 _dwriteFactory;
+  float _dpi{96.0};
 
-		static Application* _app;
-	};
-}
-
+  static Application *_app;
+};
+} // namespace DirectUI

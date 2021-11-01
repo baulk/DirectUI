@@ -17,58 +17,35 @@
 #endif
 
 #ifdef _DEBUG
-struct Tracer
-{
-    char const * m_filename;
-    unsigned m_line;
+struct Tracer {
+  char const *m_filename;
+  unsigned m_line;
 
-    Tracer(char const * filename, unsigned const line) :
-        m_filename { filename },
-        m_line { line }
-    {
+  Tracer(char const *filename, unsigned const line) : m_filename{filename}, m_line{line} {}
 
-    }
+  template <typename... Args> auto operator()(wchar_t const *format, Args... args) const -> void {
+    wchar_t buffer[400];
 
-    template <typename... Args>
-    auto operator()(wchar_t const * format, Args... args) const -> void
-    {
-        wchar_t buffer [400];
+    auto count = swprintf_s(buffer, L"%S(%d): ", m_filename, m_line);
 
-        auto count = swprintf_s(buffer,
-                                L"%S(%d): ",
-                                m_filename,
-                                m_line);
+    ASSERT(-1 != count);
 
-        ASSERT(-1 != count);
+    ASSERT(-1 != _snwprintf_s(buffer + count, _countof(buffer) - count, _countof(buffer) - count - 1, format, args...));
 
-        ASSERT(-1 != _snwprintf_s(buffer + count,
-                                  _countof(buffer) - count,
-                                  _countof(buffer) - count - 1,
-                                  format,
-                                  args...));
+    OutputDebugString(buffer);
+  }
 
-        OutputDebugString(buffer);
-    }
+  template <typename... Args> auto operator()(char const *format, Args... args) const -> void {
+    char buffer[400];
 
-    template <typename... Args>
-    auto operator()(char const * format, Args... args) const -> void {
-        char buffer[400];
+    auto count = sprintf_s(buffer, "%s(%d): ", m_filename, m_line);
 
-        auto count = sprintf_s(buffer,
-            "%s(%d): ",
-            m_filename,
-            m_line);
+    ASSERT(-1 != count);
 
-        ASSERT(-1 != count);
+    ASSERT(-1 != _snprintf_s(buffer + count, _countof(buffer) - count, _countof(buffer) - count - 1, format, args...));
 
-        ASSERT(-1 != _snprintf_s(buffer + count,
-            _countof(buffer) - count,
-            _countof(buffer) - count - 1,
-            format,
-            args...));
-
-        OutputDebugStringA(buffer);
-    }
+    OutputDebugStringA(buffer);
+  }
 };
 #endif
 

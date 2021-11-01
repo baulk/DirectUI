@@ -3,16 +3,16 @@
 using namespace DirectUI;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR lpCmdLine, int) {
-	Application app;
-	app.Initialize();
+  Application app;
+  app.Initialize();
 
-	Window mainWindow(L"Text Demo");
-	mainWindow.ClearColor(Colors::LightGray());
+  Window mainWindow(L"Text Demo");
+  mainWindow.ClearColor(Colors::LightGray());
 
-	auto tb = Create<TextBlock>();
-	tb->Text(L"Hello, TextBlock!")->Foreground(Brushes::Black())->FontSize(30);
+  auto tb = Create<TextBlock>();
+  tb->Text(L"Hello, TextBlock!")->Foreground(Brushes::Black())->FontSize(30);
 
-	mainWindow.Content(tb);
+  mainWindow.Content(tb);
 
-	return app.Run();
+  return app.Run();
 }

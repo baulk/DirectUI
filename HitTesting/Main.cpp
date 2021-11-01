@@ -4,38 +4,42 @@ using namespace DirectUI;
 using namespace DX::DirectWrite;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR lpCmdLine, int) {
-	Application app;
-	app.Initialize();
+  Application app;
+  app.Initialize();
 
-    bool yellow = false;
+  bool yellow = false;
 
-	Window mainWindow(L"Hit Testing Demo");
-	mainWindow.ClearColor(Colors::Lime());
+  Window mainWindow(L"Hit Testing Demo");
+  mainWindow.ClearColor(Colors::Lime());
 
-    DX::Color old[10];
-	auto canvas = Create<CanvasLayout>();
-	for (int i = 0; i < 10; i++) {
-		auto grid = Create<UniformGridLayout>();
-		float c = i / 10.0f;
-		grid->Width(100)->Height(100)->Background(Create<SolidColorBrush>(DX::Color(c, c, c)))->Width(100)->Height(100);;
-		auto tb = Create<TextBlock>();
-		const wchar_t text[] = { (const wchar_t)(i + L'0'), L'\0' };
-		tb->Foreground(Create<SolidColorBrush>(Colors::Red()))->TextAlignment(TextAlignment::Center)->Text(text)->FontSize(30);
-		
-		grid->AddEventHandler(UIElement::MouseDownEvent, [&yellow](auto& source, const auto& args) {
-			source.Background(yellow ? Brushes::Blue() : Brushes::Yellow());
-            yellow = !yellow;
-			return false;
-		});
+  DX::Color old[10];
+  auto canvas = Create<CanvasLayout>();
+  for (int i = 0; i < 10; i++) {
+    auto grid = Create<UniformGridLayout>();
+    float c = i / 10.0f;
+    grid->Width(100)->Height(100)->Background(Create<SolidColorBrush>(DX::Color(c, c, c)))->Width(100)->Height(100);
+    ;
+    auto tb = Create<TextBlock>();
+    const wchar_t text[] = {(const wchar_t)(i + L'0'), L'\0'};
+    tb->Foreground(Create<SolidColorBrush>(Colors::Red()))
+        ->TextAlignment(TextAlignment::Center)
+        ->Text(text)
+        ->FontSize(30);
 
-		grid->AddChild(tb);
+    grid->AddEventHandler(UIElement::MouseDownEvent, [&yellow](auto &source, const auto &args) {
+      source.Background(yellow ? Brushes::Blue() : Brushes::Yellow());
+      yellow = !yellow;
+      return false;
+    });
 
-		canvas->X(grid, i * 50.0f + 20);
-		canvas->Y(grid, i * 50.0f + 20);
-		canvas->AddChild(grid);
-	}
+    grid->AddChild(tb);
 
-	mainWindow.Content(canvas);
+    canvas->X(grid, i * 50.0f + 20);
+    canvas->Y(grid, i * 50.0f + 20);
+    canvas->AddChild(grid);
+  }
 
-	return app.Run();
+  mainWindow.Content(canvas);
+
+  return app.Run();
 }
